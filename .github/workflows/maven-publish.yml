@@ -2,7 +2,7 @@ name: pages build and deployment
 
 on:
   push:
-    branches: ["main"]   # or "master", depending on your repo
+    branches: ["main"]
 
 jobs:
   build:
@@ -13,16 +13,11 @@ jobs:
         with:
           submodules: false
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      # Upload the frontend folder as the GitHub Pages artifact
+      - name: Upload static site content
+        uses: actions/upload-pages-artifact@v2
         with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
+          path: ./frontend   # 👈 your HTML/JS/Tailwind files live here
 
   deploy:
     needs: build
@@ -30,6 +25,10 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
