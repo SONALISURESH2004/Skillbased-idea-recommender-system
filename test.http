@@ -1,0 +1,12 @@
+### Get all ideas
+GET http://localhost:8080/api/ideas
+
+### Create a new idea
+POST http://localhost:8080/api/ideas
+Content-Type: application/json
+
+{
+  "title": "My First Idea",
+  "description": "Testing REST Client",
+  "technology": "Java"
+}
