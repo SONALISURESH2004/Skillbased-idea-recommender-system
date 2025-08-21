@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Idea Recommender</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+  <!-- Login Page -->
+  <div id="loginPage" class="w-full max-w-sm bg-white shadow-lg rounded-lg p-6">
+    <header class="w-full bg-indigo-600 text-white p-4 shadow">
+  <h1 class="text-2xl font-bold text-center">Skill-Based Idea Recommender System</h1>
+</header>
+    <h2 class="text-xl font-bold mb-4 text-center">Login</h2>
+    <input id="username" type="text" placeholder="Enter your name" class="w-full p-2 border rounded mb-3">
+    <input id="password" type="password" placeholder="Enter password" class="w-full p-2 border rounded mb-3">
+    <button onclick="login()" class="w-full bg-black text-white py-2 rounded">Login</button>
+  </div>
+
+  <!-- Category Page -->
+  <div id="categoryPage" class="hidden max-w-lg mx-auto p-6">
+    
+    <h2 class="text-xl font-bold mb-4 text-center">Choose Streams</h2>
+    <div class="grid grid-cols-3 gap-4">
+      <button onclick="chooseCategory('software')" class="p-4 bg-yellow-500 text-white rounded-lg">Software</button>
+      <button onclick="chooseCategory('hardware')" class="p-4 bg-green-500 text-white rounded-lg">Hardware</button>
+      <button onclick="chooseCategory('hybrid')" class="p-4 bg-rose-500 text-white rounded-lg">Hybrid</button>
+    </div>
+  </div>
+
+  <!-- Streams Page -->
+  <div id="streamsPage" class="hidden max-w-4xl mx-auto p-6">
+    <h2 class="text-xl font-bold mb-4">Select a Domain</h2>
+    <div id="streams" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </div>
+
+  <!-- Problem Statements Page -->
+  <div id="problemsPage" class="hidden max-w-4xl mx-auto p-6">
+    <h2 class="text-xl font-bold mb-4">Problem Statements</h2>
+    <div id="problems" class="space-y-3"></div>
+    <button onclick="goToAIHelper()" class="mt-6 bg-black text-white px-4 py-2 rounded">AI Helper</button>
+  </div>
+
+  <!-- AI Helper Page -->
+  <div id="aiHelperPage" class="hidden max-w-2xl mx-auto p-6">
+    <h2 class="text-xl font-bold mb-4">AI Helper</h2>
+    <p class="mb-2">Enter your skills (comma separated):</p>
+    <input id="skillsInput" type="text" placeholder="e.g., java, sql, react"
+           class="w-full p-2 border rounded mb-4">
+    <button onclick="generateIdeas()" class="bg-black text-white px-4 py-2 rounded">Generate Unique Ideas</button>
+    <div id="aiResults" class="mt-4 space-y-2"></div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
