@@ -12,7 +12,12 @@ const domainSelect = document.getElementById("domain");
 const problemSelect = document.getElementById("problem");
 const submitBtn = document.getElementById("submit");
 
+// Next buttons
+const streamNextBtn = document.getElementById("streamNext");
+const domainNextBtn = document.getElementById("domainNext");
+
 // Back buttons
+const backToLoginBtn = document.getElementById("backToLogin"); // optional
 const backToStreamBtn = document.getElementById("backToStream");
 const backToDomainBtn = document.getElementById("backToDomain");
 
@@ -29,23 +34,27 @@ loginBtn.addEventListener("click", () => {
   }
 });
 
-// -------------------- Step 2: Choose Stream --------------------
-streamSelect.addEventListener("change", () => {
+// -------------------- Step 2: Stream Next --------------------
+streamNextBtn.addEventListener("click", () => {
   if (streamSelect.value) {
     streamSection.style.display = "none";
     domainSection.style.display = "block";
+  } else {
+    alert("⚠️ Please select a stream to continue.");
   }
 });
 
-// -------------------- Step 3: Choose Domain --------------------
-domainSelect.addEventListener("change", () => {
+// -------------------- Step 3: Domain Next --------------------
+domainNextBtn.addEventListener("click", () => {
   if (domainSelect.value) {
     domainSection.style.display = "none";
     problemSection.style.display = "block";
+  } else {
+    alert("⚠️ Please select a domain to continue.");
   }
 });
 
-// -------------------- Step 4: Choose Problem --------------------
+// -------------------- Step 4: Submit Problem --------------------
 submitBtn.addEventListener("click", () => {
   const stream = streamSelect.value;
   const domain = domainSelect.value;
@@ -75,3 +84,12 @@ backToDomainBtn.addEventListener("click", () => {
   domainSection.style.display = "block";
   problemSelect.value = ""; // Reset problem selection
 });
+
+// Optional back to login if needed
+if (backToLoginBtn) {
+  backToLoginBtn.addEventListener("click", () => {
+    streamSection.style.display = "none";
+    loginSection.style.display = "block";
+    streamSelect.value = ""; // Reset stream selection
+  });
+}

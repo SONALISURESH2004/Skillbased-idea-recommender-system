@@ -28,47 +28,42 @@
       <button onclick="chooseCategory('hardware')" class="p-4 bg-green-500 text-white rounded-lg">Hardware</button>
       <button onclick="chooseCategory('hybrid')" class="p-4 bg-rose-500 text-white rounded-lg">Hybrid</button>
     </div>
-    <!-- Back button -->
     <button onclick="goBack('loginPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- Streams Page -->
   <div id="streamsPage" class="hidden max-w-4xl mx-auto p-6">
-    <h2 class="text-xl font-bold mb-4">Select a Domain</h2>
+    <h2 class="text-xl font-bold mb-4 text-center">Select a Domain</h2>
     <div id="streams" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-    <!-- Back button -->
     <button onclick="goBack('categoryPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
-  <!-- Problem Statements Page -->
+  <!-- Problems Page -->
   <div id="problemsPage" class="hidden max-w-4xl mx-auto p-6">
-    <h2 class="text-xl font-bold mb-4">Problem Statements</h2>
+    <h2 class="text-xl font-bold mb-4 text-center">Problem Statements</h2>
     <div id="problems" class="space-y-3"></div>
     <button onclick="goToAIHelper()" class="mt-6 bg-black text-white px-4 py-2 rounded">AI Helper</button>
-    <!-- Back button -->
     <button onclick="goBack('streamsPage')" class="mt-3 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- AI Helper Page -->
   <div id="aiHelperPage" class="hidden max-w-2xl mx-auto p-6">
-    <h2 class="text-xl font-bold mb-4">AI Helper</h2>
+    <h2 class="text-xl font-bold mb-4 text-center">AI Helper</h2>
     <p class="mb-2">Enter your skills (comma separated):</p>
     <input id="skillsInput" type="text" placeholder="e.g., java, sql, react"
           class="w-full p-2 border rounded mb-4">
     <button onclick="generateIdeas()" class="bg-black text-white px-4 py-2 rounded">Generate Unique Ideas</button>
     <div id="aiResults" class="mt-4 space-y-2 bg-gray-50 p-4 rounded border"></div>
-    <!-- Back button -->
     <button onclick="goBack('problemsPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- Scripts -->
   <script src="data.js"></script>
-  <script src="app.js" type="module"></script>
+  <script type="module" src="app.js"></script>
   <script src="script.js"></script>
 
-  <!-- Login & Navigation Functions -->
   <script>
-    // Login function
+    // -------------------- Login Function --------------------
     function login() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
@@ -83,10 +78,64 @@
       }
     }
 
-    // Generic Back navigation
+    // -------------------- Generic Back Navigation --------------------
     function goBack(pageId) {
       document.querySelectorAll("body > div").forEach(div => div.classList.add("hidden"));
       document.getElementById(pageId).classList.remove("hidden");
+    }
+
+    // -------------------- Choose Category --------------------
+    function chooseCategory(category) {
+      // Dynamically populate domains based on category from data.js
+      const streamsContainer = document.getElementById("streams");
+      streamsContainer.innerHTML = ""; // Clear previous
+      data[category].forEach(domain => {
+        const btn = document.createElement("button");
+        btn.textContent = domain.name;
+        btn.className = "p-4 bg-indigo-500 text-white rounded-lg";
+        btn.onclick = () => chooseDomain(domain);
+        streamsContainer.appendChild(btn);
+      });
+      goBack('streamsPage');
+    }
+
+    // -------------------- Choose Domain --------------------
+    function chooseDomain(domain) {
+      const problemsContainer = document.getElementById("problems");
+      problemsContainer.innerHTML = "";
+      domain.problems.forEach(problem => {
+        const btn = document.createElement("button");
+        btn.textContent = problem;
+        btn.className = "w-full text-left p-3 bg-gray-200 rounded hover:bg-gray-300";
+        btn.onclick = () => alert(`✅ You selected problem: ${problem}`);
+        problemsContainer.appendChild(btn);
+      });
+      goBack('problemsPage');
+    }
+
+    // -------------------- Go to AI Helper --------------------
+    function goToAIHelper() {
+      goBack('aiHelperPage');
+    }
+
+    // -------------------- Generate Ideas --------------------
+    function generateIdeas() {
+      const input = document.getElementById("skillsInput").value.trim();
+      const resultsContainer = document.getElementById("aiResults");
+      resultsContainer.innerHTML = "";
+
+      if (!input) {
+        resultsContainer.textContent = "⚠️ Please enter at least one skill.";
+        resultsContainer.classList.add("text-red-500");
+        return;
+      }
+
+      const skills = input.split(",").map(s => s.trim());
+      skills.forEach(skill => {
+        const p = document.createElement("p");
+        p.textContent = `💡 Idea based on ${skill}: Create a project using ${skill}`;
+        resultsContainer.appendChild(p);
+      });
     }
   </script>
 </body>
