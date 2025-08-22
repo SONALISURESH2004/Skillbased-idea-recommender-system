@@ -28,12 +28,16 @@
       <button onclick="chooseCategory('hardware')" class="p-4 bg-green-500 text-white rounded-lg">Hardware</button>
       <button onclick="chooseCategory('hybrid')" class="p-4 bg-rose-500 text-white rounded-lg">Hybrid</button>
     </div>
+    <!-- ➕ Back button -->
+    <button onclick="goBack('loginPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- Streams Page -->
   <div id="streamsPage" class="hidden max-w-4xl mx-auto p-6">
     <h2 class="text-xl font-bold mb-4">Select a Domain</h2>
     <div id="streams" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    <!-- ➕ Back button -->
+    <button onclick="goBack('categoryPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- Problem Statements Page -->
@@ -41,6 +45,8 @@
     <h2 class="text-xl font-bold mb-4">Problem Statements</h2>
     <div id="problems" class="space-y-3"></div>
     <button onclick="goToAIHelper()" class="mt-6 bg-black text-white px-4 py-2 rounded">AI Helper</button>
+    <!-- ➕ Back button -->
+    <button onclick="goBack('streamsPage')" class="mt-3 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- AI Helper Page -->
@@ -51,6 +57,8 @@
           class="w-full p-2 border rounded mb-4">
     <button onclick="generateIdeas()" class="bg-black text-white px-4 py-2 rounded">Generate Unique Ideas</button>
     <div id="aiResults" class="mt-4 space-y-2 bg-gray-50 p-4 rounded border"></div>
+    <!-- ➕ Back button -->
+    <button onclick="goBack('problemsPage')" class="mt-6 bg-gray-600 text-white px-4 py-2 rounded">⬅ Back</button>
   </div>
 
   <!-- Scripts -->
@@ -58,7 +66,7 @@
   <script src="app.js" type="module"></script>
   <script src="script.js"></script>
 
-  <!-- Login Function -->
+  <!-- Login & Navigation Functions -->
   <script>
     function login() {
       const username = document.getElementById("username").value.trim();
@@ -66,13 +74,18 @@
       const errorText = document.getElementById("loginError");
 
       if (username && password) {
-        // hide login, show categories
         document.getElementById("loginPage").classList.add("hidden");
         document.getElementById("categoryPage").classList.remove("hidden");
         errorText.classList.add("hidden");
       } else {
         errorText.classList.remove("hidden");
       }
+    }
+
+    // ➕ Generic Back function
+    function goBack(pageId) {
+      document.querySelectorAll("body > div").forEach(div => div.classList.add("hidden"));
+      document.getElementById(pageId).classList.remove("hidden");
     }
   </script>
 </body>

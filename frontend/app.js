@@ -1,6 +1,6 @@
 import { DATA } from "./data.js";
 
-// ---------------- Login Validation ----------------
+// ---------------- LOGIN VALIDATION ----------------
 const loginForm = document.getElementById("login-form");
 
 if (loginForm) {
@@ -12,25 +12,69 @@ if (loginForm) {
 
     // Allow login for any non-empty username/password
     if (username && password) {
-      // Save login status in localStorage
       localStorage.setItem("loggedIn", "true");
-      localStorage.setItem("username", username); // optional: save user’s name
-      alert("Login successful!");
+      localStorage.setItem("username", username);
 
-      // Redirect to main page
-      window.location.href = "index.html";
+      // Go to category page
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("categoryPage").classList.remove("hidden");
     } else {
-      alert("Please enter both username and password");
+      alert("⚠️ Please enter both username and password");
     }
   });
 }
 
-// ---------------- Dropdown Logic ----------------
+// ---------------- CATEGORY SELECTION ----------------
+window.chooseCategory = function (category) {
+  // Hide category page
+  document.getElementById("categoryPage").classList.add("hidden");
+
+  // Show streams page
+  document.getElementById("streamsPage").classList.remove("hidden");
+
+  // Populate streams dynamically
+  const streamsContainer = document.getElementById("streams");
+  streamsContainer.innerHTML = "";
+
+  if (DATA[category]) {
+    DATA[category].streams.forEach((stream) => {
+      const btn = document.createElement("button");
+      btn.textContent = stream;
+      btn.className =
+        "p-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-700";
+      btn.onclick = () => loadProblems(category, stream);
+      streamsContainer.appendChild(btn);
+    });
+  }
+};
+
+// ---------------- PROBLEMS LOADER ----------------
+function loadProblems(category, stream) {
+  // Hide streams page
+  document.getElementById("streamsPage").classList.add("hidden");
+
+  // Show problems page
+  document.getElementById("problemsPage").classList.remove("hidden");
+
+  const problemsContainer = document.getElementById("problems");
+  problemsContainer.innerHTML = "";
+
+  if (DATA[category].problems[stream]) {
+    DATA[category].problems[stream].forEach((problem) => {
+      const div = document.createElement("div");
+      div.textContent = problem;
+      div.className =
+        "p-3 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-pointer";
+      problemsContainer.appendChild(div);
+    });
+  }
+}
+
+// ---------------- DROPDOWN LOGIC (OPTIONAL) ----------------
 const domainSelect = document.getElementById("domain");
 const streamSelect = document.getElementById("stream");
 const problemSelect = document.getElementById("problem");
 
-// Populate Streams when Domain changes
 if (domainSelect) {
   domainSelect.addEventListener("change", () => {
     const domain = domainSelect.value;
@@ -48,7 +92,6 @@ if (domainSelect) {
   });
 }
 
-// Populate Problems when Stream changes
 if (streamSelect) {
   streamSelect.addEventListener("change", () => {
     const domain = domainSelect.value;
