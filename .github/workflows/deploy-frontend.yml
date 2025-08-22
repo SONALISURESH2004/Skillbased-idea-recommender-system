@@ -2,26 +2,30 @@ name: Deploy Static Frontend to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Upload frontend folder
-        uses: actions/upload-pages-artifact@v2
+      - name: Upload static site content
+        uses: actions/upload-pages-artifact@v3   # ✅ updated to v3
         with:
-          path: ./frontend   # 👈 your static HTML/JS/Tailwind files
+          path: ./frontend   # make sure index.html is inside this folder
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4   # ✅ updated to v4
