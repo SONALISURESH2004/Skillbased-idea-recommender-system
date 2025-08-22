@@ -16,21 +16,27 @@ if (loginForm) {
       localStorage.setItem("username", username);
 
       // Go to category page
-      document.getElementById("loginPage").classList.add("hidden");
-      document.getElementById("categoryPage").classList.remove("hidden");
+      showPage("categoryPage");
     } else {
       alert("⚠️ Please enter both username and password");
     }
   });
 }
 
+// ---------------- NAVIGATION HELPER ----------------
+function showPage(pageId) {
+  document.querySelectorAll("body > div").forEach(div => div.classList.add("hidden"));
+  document.getElementById(pageId).classList.remove("hidden");
+}
+
+window.goBack = function (pageId) {
+  showPage(pageId);
+};
+
 // ---------------- CATEGORY SELECTION ----------------
 window.chooseCategory = function (category) {
-  // Hide category page
-  document.getElementById("categoryPage").classList.add("hidden");
-
   // Show streams page
-  document.getElementById("streamsPage").classList.remove("hidden");
+  showPage("streamsPage");
 
   // Populate streams dynamically
   const streamsContainer = document.getElementById("streams");
@@ -50,11 +56,8 @@ window.chooseCategory = function (category) {
 
 // ---------------- PROBLEMS LOADER ----------------
 function loadProblems(category, stream) {
-  // Hide streams page
-  document.getElementById("streamsPage").classList.add("hidden");
-
   // Show problems page
-  document.getElementById("problemsPage").classList.remove("hidden");
+  showPage("problemsPage");
 
   const problemsContainer = document.getElementById("problems");
   problemsContainer.innerHTML = "";
@@ -65,46 +68,37 @@ function loadProblems(category, stream) {
       div.textContent = problem;
       div.className =
         "p-3 bg-gray-200 rounded-lg hover:bg-gray-300 cursor-pointer";
+      div.onclick = () => {
+        alert(`✅ You selected: ${problem}`);
+      };
       problemsContainer.appendChild(div);
     });
   }
 }
 
-// ---------------- DROPDOWN LOGIC (OPTIONAL) ----------------
-const domainSelect = document.getElementById("domain");
-const streamSelect = document.getElementById("stream");
-const problemSelect = document.getElementById("problem");
+// ---------------- AI HELPER NAVIGATION ----------------
+window.goToAIHelper = function () {
+  showPage("aiHelperPage");
+};
 
-if (domainSelect) {
-  domainSelect.addEventListener("change", () => {
-    const domain = domainSelect.value;
-    streamSelect.innerHTML = '<option value="">-- Select Stream --</option>';
-    problemSelect.innerHTML = '<option value="">-- Select Problem --</option>';
+// ---------------- AI HELPER IDEA GENERATOR ----------------
+window.generateIdeas = function () {
+  const skillsInput = document.getElementById("skillsInput").value.trim();
+  const aiResults = document.getElementById("aiResults");
 
-    if (domain && DATA[domain]) {
-      DATA[domain].streams.forEach((stream) => {
-        const option = document.createElement("option");
-        option.value = stream;
-        option.textContent = stream;
-        streamSelect.appendChild(option);
-      });
-    }
+  aiResults.innerHTML = "";
+
+  if (!skillsInput) {
+    aiResults.innerHTML = `<p class="text-red-500">⚠️ Please enter your skills first.</p>`;
+    return;
+  }
+
+  const skills = skillsInput.split(",").map(s => s.trim()).filter(Boolean);
+
+  // Dummy idea generation based on skills
+  skills.forEach((skill, i) => {
+    const idea = document.createElement("p");
+    idea.textContent = `💡 Idea ${i + 1}: Use ${skill} to build a unique project.`;
+    aiResults.appendChild(idea);
   });
-}
-
-if (streamSelect) {
-  streamSelect.addEventListener("change", () => {
-    const domain = domainSelect.value;
-    const stream = streamSelect.value;
-    problemSelect.innerHTML = '<option value="">-- Select Problem --</option>';
-
-    if (domain && stream && DATA[domain].problems[stream]) {
-      DATA[domain].problems[stream].forEach((problem) => {
-        const option = document.createElement("option");
-        option.value = problem;
-        option.textContent = problem;
-        problemSelect.appendChild(option);
-      });
-    }
-  });
-}
+};
