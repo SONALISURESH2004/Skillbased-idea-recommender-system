@@ -1,70 +1,39 @@
-function showPage(id) {
-  ["loginPage", "categoryPage", "streamsPage", "problemsPage", "aiHelperPage"]
-    .forEach(p => document.getElementById(p).classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
+// Import DATA (from data.js)
+import { DATA } from "./data.js";
 
-function login() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  if (user && pass) {
-    showPage("categoryPage");
-  } else {
-    alert("Enter username & password");
-  }
-}
+// References
+const domainSelect = document.getElementById("domain");
+const streamSelect = document.getElementById("stream");
+const problemSelect = document.getElementById("problem");
 
-let currentCategory = "";
-let currentStream = "";
+// Populate Streams when Domain changes
+domainSelect.addEventListener("change", () => {
+  const domain = domainSelect.value;
+  streamSelect.innerHTML = '<option value="">-- Select Stream --</option>';
+  problemSelect.innerHTML = '<option value="">-- Select Problem --</option>';
 
-function chooseCategory(cat) {
-  currentCategory = cat;
-  const streamsDiv = document.getElementById("streams");
-  streamsDiv.innerHTML = "";
-  DATA[cat].streams.forEach(s => {
-    const btn = document.createElement("button");
-    btn.textContent = s;
-    btn.className = "p-3 bg-gray-200 rounded hover:bg-gray-300";
-    btn.onclick = () => chooseStream(s);
-    streamsDiv.appendChild(btn);
-  });
-  showPage("streamsPage");
-}
-
-function chooseStream(stream) {
-  currentStream = stream;
-  const probsDiv = document.getElementById("problems");
-  probsDiv.innerHTML = "";
-  DATA[currentCategory].problems[stream].forEach(p => {
-    const card = document.createElement("div");
-    card.className = "bg-white shadow p-3 rounded";
-    card.textContent = p;
-    probsDiv.appendChild(card);
-  });
-  showPage("problemsPage");
-}
-
-function goToAIHelper() {
-  showPage("aiHelperPage");
-}
-
-
-  function generateIdeas() {
-  const skills = document.getElementById("skillsInput").value;
-
-  fetch(`http://localhost:8080/api/ai/ideas?skills=${encodeURIComponent(skills)}`)
-    .then(response => response.text())
-    .then(data => {
-      const resultsDiv = document.getElementById("aiResults");
-      resultsDiv.innerHTML = ""; // clear old results
-
-      // Show response
-      const p = document.createElement("pre");
-      p.textContent = data;
-      resultsDiv.appendChild(p);
-    })
-    .catch(error => {
-      console.error("Error fetching AI ideas:", error);
-      alert("Something went wrong while generating ideas.");
+  if (domain && DATA[domain]) {
+    DATA[domain].streams.forEach(stream => {
+      const option = document.createElement("option");
+      option.value = stream;
+      option.textContent = stream;
+      streamSelect.appendChild(option);
     });
-}
+  }
+});
+
+// Populate Problems when Stream changes
+streamSelect.addEventListener("change", () => {
+  const domain = domainSelect.value;
+  const stream = streamSelect.value;
+  problemSelect.innerHTML = '<option value="">-- Select Problem --</option>';
+
+  if (domain && stream && DATA[domain].problems[stream]) {
+    DATA[domain].problems[stream].forEach(problem => {
+      const option = document.createElement("option");
+      option.value = problem;
+      option.textContent = problem;
+      problemSelect.appendChild(option);
+    });
+  }
+});
