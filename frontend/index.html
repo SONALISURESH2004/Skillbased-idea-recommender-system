@@ -17,6 +17,7 @@
     <input id="username" type="text" placeholder="Enter your name" class="w-full p-2 border rounded mb-3">
     <input id="password" type="password" placeholder="Enter password" class="w-full p-2 border rounded mb-3">
     <button onclick="login()" class="w-full bg-black text-white py-2 rounded">Login</button>
+    <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Invalid username or password</p>
   </div>
 
   <!-- Category Page -->
@@ -54,7 +55,27 @@
 
   <!-- Scripts -->
   <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js" type="module"></script>
   <script src="script.js"></script>
+
+  <!-- Login Function -->
+  <script>
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorText = document.getElementById("loginError");
+
+      // dummy credentials
+      const VALID_USER = "admin";
+      const VALID_PASS = "1234";
+
+      if (username === VALID_USER && password === VALID_PASS) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("categoryPage").classList.remove("hidden");
+      } else {
+        errorText.classList.remove("hidden");
+      }
+    }
+  </script>
 </body>
 </html>
