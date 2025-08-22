@@ -17,7 +17,7 @@
     <input id="username" type="text" placeholder="Enter your name" class="w-full p-2 border rounded mb-3">
     <input id="password" type="password" placeholder="Enter password" class="w-full p-2 border rounded mb-3">
     <button onclick="login()" class="w-full bg-black text-white py-2 rounded">Login</button>
-    <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Invalid username or password</p>
+    <p id="loginError" class="text-red-500 text-sm mt-2 hidden">Username and password cannot be empty</p>
   </div>
 
   <!-- Category Page -->
@@ -65,13 +65,11 @@
       const password = document.getElementById("password").value.trim();
       const errorText = document.getElementById("loginError");
 
-      // dummy credentials
-      const VALID_USER = "admin";
-      const VALID_PASS = "1234";
-
-      if (username === VALID_USER && password === VALID_PASS) {
+      if (username && password) {
+        // hide login, show categories
         document.getElementById("loginPage").classList.add("hidden");
         document.getElementById("categoryPage").classList.remove("hidden");
+        errorText.classList.add("hidden");
       } else {
         errorText.classList.remove("hidden");
       }

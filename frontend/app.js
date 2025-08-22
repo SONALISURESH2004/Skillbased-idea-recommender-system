@@ -10,16 +10,17 @@ if (loginForm) {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // Simple login check (you can replace with DB or Firebase later)
-    if (username === "admin" && password === "1234") {
+    // Allow login for any non-empty username/password
+    if (username && password) {
       // Save login status in localStorage
       localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("username", username); // optional: save user’s name
       alert("Login successful!");
 
       // Redirect to main page
-      window.location.href = "main.html";
+      window.location.href = "index.html";
     } else {
-      alert("Invalid username or password");
+      alert("Please enter both username and password");
     }
   });
 }
